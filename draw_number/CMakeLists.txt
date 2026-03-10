@@ -26,3 +26,22 @@ target_include_directories(main
 target_link_libraries(main
   ${raylib_LIBRARIES}
 )
+
+set(MAIN_FFMPEG_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/main_ffmpeg.c
+  )
+
+add_executable(main_ffmpeg)
+target_sources(main_ffmpeg
+ PRIVATE
+  ${MAIN_FFMPEG_SRC}
+)
+
+target_include_directories(main_ffmpeg
+ PRIVATE
+  ${raylib_INCLUDE_DIRS}
+  )
+
+target_link_libraries(main_ffmpeg
+  ${raylib_LIBRARIES}
+)
