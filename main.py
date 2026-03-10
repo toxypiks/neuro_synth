@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import torch as pt
 import torch.nn as nn
 from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
 
 
 class MnistDataset(Dataset):
@@ -18,7 +19,7 @@ class MnistDataset(Dataset):
         target = pt.zeros((10))
         target[label] = 1.0
         image_values = pt.FloatTensor(self.data[index][1]) / 255.0
-        return label, image_values, target
+        return image_values, target
 
 
 class Classifier(nn.Module):
@@ -31,7 +32,7 @@ class Classifier(nn.Module):
             nn.Sigmoid()
         )
         self.loss_function = nn.MSELoss()
-        self.optimiser = pt.optim.SGD(self.parameters(), lr=0.01)
+        self.optimizer = pt.optim.SGD(self.parameters(), lr=0.01)
 
     def forward(self, input):
         return self.model(input)
@@ -43,6 +44,7 @@ class NeuronalNetworkLearningOrganizer:
         self.test_dataset = MnistDataset(test_data)
         # hardcoded module
         self.classifier = Classifier()
+        self.loss_fn = nn.BCELoss()
 
     def prepare(self):
         # vorverarbeitung
@@ -53,10 +55,21 @@ class NeuronalNetworkLearningOrganizer:
         print("TODO: train_step()")
 
     def train(self):
-        # learning of neuronal network
-        # use self.train in loop
-        print("TODO: train()")
+        # just one train step of training
+        print("train")
+        train_dataloader = DataLoader(self.train_dataset, batch_size=60, shuffle=True)
+        n_epochs = 40
+        for epoch in range(n_epochs):
+            for images, targets in train_dataloader: # is doing 1000 loops
+                outputs = self.classifier(images)
+                # outputs save the computation path
+                loss = self.loss_fn(outputs, targets)  # Compute the loss
+                # Backward pass
+                loss.backward()  # Compute gradients for all parameters
 
+                # Update parameters
+                self.classifier.optimizer.step()  # Apply the gradients to update model weights
+                self.classifier.optimizer.zero_grad()  # Clear gradients for the next iteration
 
 
 def main():
