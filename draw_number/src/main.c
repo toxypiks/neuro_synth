@@ -11,7 +11,7 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Draw a number");
 
-    SetTargetFPS(120);
+    SetTargetFPS(60);
     Vector2* points = NULL;
 
     while(!WindowShouldClose())
@@ -24,6 +24,12 @@ int main()
         if(IsKeyPressed(KEY_S))
         {
             TakeScreenshot("screenshot.png");
+        }
+
+        if(IsKeyPressed(KEY_R))
+        {
+            arrfree(points);
+            points = NULL;
         }
 
         BeginDrawing();
