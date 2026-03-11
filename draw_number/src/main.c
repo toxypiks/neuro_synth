@@ -20,6 +20,12 @@ int main()
         {
             arrput(points, GetMousePosition());
         }
+
+        if(IsKeyPressed(KEY_S))
+        {
+            TakeScreenshot("screenshot.png");
+        }
+
         BeginDrawing();
         ClearBackground(BLACK);
 
