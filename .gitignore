@@ -1,0 +1,5 @@
+*.zip
+data/
+draw_number/build/
+draw_number/include/
+draw_number/video_output/
