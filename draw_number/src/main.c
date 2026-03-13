@@ -80,7 +80,7 @@ int main()
             ImageColorGrayscale(&img);
 
             char buffer[256];
-            sprintf(buffer, "digit_%zu.png", screenshot_index);
+            sprintf(buffer, "../screenshots/digit_%zu.png", screenshot_index);
 
             ExportImage(img, buffer);
             UnloadImage(img);
