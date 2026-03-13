@@ -22,9 +22,6 @@ int main()
     ClearBackground(BLACK);
     EndTextureMode();
 
-    Vector2** strokes = NULL;
-    Vector2* current_stroke = NULL;
-
     size_t screenshot_index = 0;
 
     while (!WindowShouldClose())
@@ -41,40 +38,16 @@ int main()
                     mouse.y - canvas_rect.y
                 };
 
-                arrput(current_stroke, canvas_pos);
-
-                // draw on canvas
-                if (arrlen(current_stroke) > 1)
-                {
-                    BeginTextureMode(canvas);
-
-                    float thickness = 10.0f;
-
-                    DrawLineEx(
-                        current_stroke[arrlen(current_stroke)-2],
-                        current_stroke[arrlen(current_stroke)-1],
-                        thickness,
-                        WHITE
-                    );
-
-                    EndTextureMode();
-                }
-            }
-        }
-        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-        {
-            if (current_stroke != NULL)
-            {
-                arrput(strokes, current_stroke);
-                current_stroke = NULL;
+                BeginTextureMode(canvas);
+                DrawCircleV(canvas_pos, 5.0f, WHITE);
+                EndTextureMode();
             }
         }
 
-        // screenshot (28x28 export)
+        // screenshot (28x28)
         if (IsKeyPressed(KEY_S))
         {
             Image img = LoadImageFromTexture(canvas.texture);
-
             ImageFlipVertical(&img);
             ImageResize(&img, 28, 28);
             ImageColorGrayscale(&img);
@@ -94,15 +67,6 @@ int main()
             BeginTextureMode(canvas);
             ClearBackground(BLACK);
             EndTextureMode();
-
-            for (int i = 0; i < arrlen(strokes); i++)
-                arrfree(strokes[i]);
-
-            arrfree(strokes);
-            strokes = NULL;
-
-            arrfree(current_stroke);
-            current_stroke = NULL;
         }
 
         // rendering
@@ -126,12 +90,6 @@ int main()
 
         EndDrawing();
     }
-
-    for (int i = 0; i < arrlen(strokes); i++)
-        arrfree(strokes[i]);
-
-    arrfree(strokes);
-    arrfree(current_stroke);
 
     UnloadRenderTexture(canvas);
     CloseWindow();
